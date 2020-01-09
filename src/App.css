@@ -1,0 +1,17 @@
+nav {
+  background: darkred;
+  padding: 15px 0;
+}
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+li {
+  margin: 0 20px 0;
+}
+li a {
+  color: #fff;
+  font-size: 24px;
+}
