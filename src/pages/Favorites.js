@@ -17,7 +17,7 @@ const Favorites = () => {
 
   return (
     <>
-      <h2>My Books</h2>
+      <h2 className="title">My Books</h2>
       {staredBooks.length ? (
         <table className="table">
           <thead>
@@ -38,6 +38,7 @@ const Favorites = () => {
                   <button
                     className="favbutton"
                     onClick={() => handleUnStar(book.id)}
+                    aria-label="unlike this book"
                   >
                     <HeartIconFav />
                   </button>

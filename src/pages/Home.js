@@ -15,11 +15,9 @@ const Home = () => {
     setBooks(filteredBooks);
   };
 
-  // console.log('books', books);
-
   return (
     <>
-      <h2>Some Kinda Library </h2>
+      <h2 className="title">Some Kinda Library </h2>
       <table className="table">
         <thead>
           <tr>
@@ -41,6 +39,7 @@ const Home = () => {
                   <button
                     className="favbutton"
                     onClick={() => updateState(book.id)}
+                    aria-label="like this book"
                   >
                     <HeartIcon />
                   </button>
