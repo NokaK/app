@@ -10,3 +10,15 @@ export const mapBooks = books => {
     };
   });
 };
+
+export const mapSingleBook = book => {
+  return {
+    id: book.id,
+    author: book.volumeInfo.authors[0],
+    title: book.volumeInfo.title,
+    description: book.volumeInfo.description,
+    publisher: book.volumeInfo.publisher,
+    publishedDate: book.volumeInfo.publishedDate,
+    imgUrl: book.volumeInfo.imageLinks['thumbnail']
+  };
+};
