@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
 
 class Home extends Component {
   handleClick = e => {
@@ -12,13 +8,15 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Table>
+        <table className="table">
           <thead>
             <tr>
               <th>kind</th>
               <th>Id</th>
               <th>etag</th>
               <th>selfLink</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -34,7 +32,7 @@ class Home extends Component {
                       className="addfavoritebutton"
                       onClick={() => this.props.updateState(book.id)}
                     >
-                      <FontAwesomeIcon icon={faHeart} />
+                      &hearts;
                     </div>
                   </td>
                   <td>readmore</td>
@@ -42,7 +40,7 @@ class Home extends Component {
               );
             })}
           </tbody>
-        </Table>
+        </table>
       </div>
     );
   }

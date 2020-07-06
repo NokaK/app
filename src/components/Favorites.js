@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
 
 class Favorites extends Component {
   render() {
     return (
       <div>
-        <Table>
+        <table className='table'>
           <thead>
             <tr>
               <th>kind</th>
               <th>Id</th>
               <th>etag</th>
               <th>selfLink</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -29,7 +29,7 @@ class Favorites extends Component {
                 );
               })}
           </tbody>
-        </Table>
+        </table>
       </div>
     );
   }
