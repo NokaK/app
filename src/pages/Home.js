@@ -1,5 +1,9 @@
 import React, { useContext } from 'react';
+import { ReactComponent as HeartIcon } from '../icons/heart.svg';
+
 import { BookContext } from '../bookContext';
+import { Link } from 'react-router-dom';
+import TextTruncate from 'react-text-truncate';
 
 const Home = () => {
   const { books, setBooks } = useContext(BookContext);
@@ -11,18 +15,19 @@ const Home = () => {
     setBooks(filteredBooks);
   };
 
+  // console.log('books', books);
+
   return (
     <>
       <h2>Some Kinda Library </h2>
       <table className="table">
         <thead>
           <tr>
-            <th>kind</th>
             <th>Id</th>
-            <th>etag</th>
-            <th>selfLink</th>
+            <th>title</th>
             <th></th>
-            <th></th>
+            <th>author</th>
+            <th>description</th>
           </tr>
         </thead>
         <tbody>
@@ -30,19 +35,27 @@ const Home = () => {
             .filter(book => !book.isFav)
             .map(book => (
               <tr key={book.id}>
-                <td>{book.kind}</td>
                 <td>{book.id}</td>
-                <td>{book.etag}</td>
-                <td>{book.selfLink}</td>
+                <td>{book.title}</td>
                 <td>
                   <button
-                    className="addfavoritebutton"
+                    className="favbutton"
                     onClick={() => updateState(book.id)}
                   >
-                    &hearts;
+                    <HeartIcon />
                   </button>
                 </td>
-                <td>readmore</td>
+                <td>{book.author}</td>
+                <td style={{ maxWidth: 300 }}>
+                  <TextTruncate
+                    line={1}
+                    element="span"
+                    text={book.description}
+                    textTruncateChild={
+                      <Link to={`/book/${book.id}`}>read more</Link>
+                    }
+                  />
+                </td>
               </tr>
             ))}
         </tbody>

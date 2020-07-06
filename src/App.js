@@ -7,6 +7,7 @@ import Details from './pages/Details';
 import Favorites from './pages/Favorites';
 
 import { BookContext } from './bookContext';
+import { mapBooks } from './utils/mapBooks';
 
 const App = () => {
   const [books, setBooks] = useState([]);
@@ -16,7 +17,7 @@ const App = () => {
       const { data } = await axios.get(
         'https://www.googleapis.com/books/v1/volumes?q=harry&fbclid=IwAR0GNT0p1cF3NPkf81hy-ZSfPcGFGRK6WdAXWoBORurTiwrACCpPUHUOSgE'
       );
-      setBooks(data.items.map(item => ({ ...item, isFav: false })));
+      setBooks(mapBooks(data.items));
     }
     fetchBooks();
   }, []);
@@ -26,7 +27,7 @@ const App = () => {
       <Navbar />
 
       <BookContext.Provider value={{ books, setBooks }}>
-        <main>
+        <main className="main">
           <Switch>
             <Route path="/book/:id">
               <Details />
