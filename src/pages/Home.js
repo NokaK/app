@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { BookContext } from '../bookContext';
 
-const Home = props => {
+const Home = () => {
+  const { books, setBooks } = useContext(BookContext);
+
+  const updateState = id => {
+    const filteredBooks = books.map(book =>
+      book.id === id ? { ...book, isFav: !book.isFav } : book
+    );
+    setBooks(filteredBooks);
+  };
+
   return (
     <>
       <h2>Some Kinda Library </h2>
@@ -16,23 +26,25 @@ const Home = props => {
           </tr>
         </thead>
         <tbody>
-          {props.data.map(book => (
-            <tr key={book.id}>
-              <td>{book.kind}</td>
-              <td>{book.id}</td>
-              <td>{book.etag}</td>
-              <td>{book.selfLink}</td>
-              <td>
-                <button
-                  className="addfavoritebutton"
-                  onClick={() => props.updateState(book.id)}
-                >
-                  &hearts;
-                </button>
-              </td>
-              <td>readmore</td>
-            </tr>
-          ))}
+          {books
+            .filter(book => !book.isFav)
+            .map(book => (
+              <tr key={book.id}>
+                <td>{book.kind}</td>
+                <td>{book.id}</td>
+                <td>{book.etag}</td>
+                <td>{book.selfLink}</td>
+                <td>
+                  <button
+                    className="addfavoritebutton"
+                    onClick={() => updateState(book.id)}
+                  >
+                    &hearts;
+                  </button>
+                </td>
+                <td>readmore</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </>

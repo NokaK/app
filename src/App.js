@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Details from './pages/Details';
 import Favorites from './pages/Favorites';
+
+import { BookContext } from './bookContext';
 
 const App = () => {
   const [books, setBooks] = useState([]);
@@ -19,35 +21,25 @@ const App = () => {
     fetchBooks();
   }, []);
 
-  const updateState = id => {
-    const filteredBooks = books.map(book =>
-      book.id === id ? { ...book, isFav: !book.isFav } : book
-    );
-    setBooks(filteredBooks);
-  };
-
   return (
     <Router>
       <Navbar />
 
-      <main>
-        <Route
-          exact
-          path="/"
-          component={props => (
-            <Home
-              {...props}
-              data={books.filter(b => !b.isFav)}
-              updateState={updateState}
-            />
-          )}
-        />
-        <Route path="/Details" component={Details} />
-        <Route
-          path="/Favorites"
-          component={() => <Favorites data={books.filter(b => b.isFav)} />}
-        />
-      </main>
+      <BookContext.Provider value={{ books, setBooks }}>
+        <main>
+          <Switch>
+            <Route path="/book/:id">
+              <Details />
+            </Route>
+            <Route path="/favorites">
+              <Favorites />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </main>
+      </BookContext.Provider>
     </Router>
   );
 };
