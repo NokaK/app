@@ -15,23 +15,24 @@ const Home = () => {
     setBooks(filteredBooks);
   };
 
+  const currentBooks = books.filter(book => !book.isFav);
+
   return (
     <>
       <h2 className="title">Some Kinda Library </h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>title</th>
-            <th></th>
-            <th>author</th>
-            <th>description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books
-            .filter(book => !book.isFav)
-            .map(book => (
+      {currentBooks.length ? (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>title</th>
+              <th></th>
+              <th>author</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentBooks.map(book => (
               <tr key={book.id}>
                 <td>{book.id}</td>
                 <td>{book.title}</td>
@@ -57,8 +58,11 @@ const Home = () => {
                 </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      ) : (
+        <p>wow, such empty</p>
+      )}
     </>
   );
 };
