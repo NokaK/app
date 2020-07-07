@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { ReactComponent as HeartIconFav } from '../icons/heart-full.svg';
 import { BookContext } from '../bookContext';
-import TextTruncate from 'react-text-truncate';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Favorites = () => {
   const { books, setBooks } = useContext(BookContext);
@@ -17,45 +17,46 @@ const Favorites = () => {
 
   return (
     <>
-      <h2 className="title">My Books</h2>
+      <h2 className="title">My Collection</h2>
       {staredBooks.length ? (
         <table className="table">
           <thead>
             <tr>
-              <th>Id</th>
+              <th>genre</th>
+              <th>author</th>
               <th>title</th>
               <th></th>
-              <th>author</th>
               <th>description</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {staredBooks.map(book => (
-              <tr key={book.id}>
-                <td>{book.id}</td>
-                <td>{book.title}</td>
-                <td>
-                  <button
-                    className="favbutton"
-                    onClick={() => handleUnStar(book.id)}
-                    aria-label="unlike this book"
-                  >
-                    <HeartIconFav />
-                  </button>
-                </td>
-                <td>{book.author}</td>
-                <td style={{ maxWidth: 300 }}>
-                  <TextTruncate
-                    line={1}
-                    element="span"
-                    text={book.description}
-                    textTruncateChild={
-                      <Link to={`/book/${book.id}`}>read more</Link>
-                    }
-                  />
-                </td>
-              </tr>
-            ))}
+            <AnimatePresence>
+              {staredBooks.map(book => (
+                <motion.tr
+                  key={book.id}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <td>{book.category}</td>
+                  <td>{book.author}</td>
+                  <td>{book.title}</td>
+                  <td>
+                    <button
+                      className="favbutton"
+                      onClick={() => handleUnStar(book.id)}
+                      aria-label="unlike this book"
+                    >
+                      <HeartIconFav />
+                    </button>
+                  </td>
+                  <td style={{ maxWidth: 300 }}>{book.description}</td>
+                  <td>
+                    <Link to={`/book/${book.id}`}>read more</Link>
+                  </td>
+                </motion.tr>
+              ))}
+            </AnimatePresence>
           </tbody>
         </table>
       ) : (

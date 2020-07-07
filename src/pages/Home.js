@@ -3,7 +3,7 @@ import { ReactComponent as HeartIcon } from '../icons/heart.svg';
 
 import { BookContext } from '../bookContext';
 import { Link } from 'react-router-dom';
-import TextTruncate from 'react-text-truncate';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
   const { books, setBooks } = useContext(BookContext);
@@ -24,40 +24,51 @@ const Home = () => {
         <table className="table">
           <thead>
             <tr>
-              <th>Id</th>
+              <th>genre</th>
+              <th>author</th>
               <th>title</th>
               <th></th>
-              <th>author</th>
               <th>description</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {currentBooks.map(book => (
-              <tr key={book.id}>
-                <td>{book.id}</td>
-                <td>{book.title}</td>
-                <td>
-                  <button
-                    className="favbutton"
-                    onClick={() => updateState(book.id)}
-                    aria-label="like this book"
-                  >
-                    <HeartIcon />
-                  </button>
-                </td>
-                <td>{book.author}</td>
-                <td style={{ maxWidth: 300 }}>
-                  <TextTruncate
-                    line={1}
-                    element="span"
-                    text={book.description}
-                    textTruncateChild={
-                      <Link to={`/book/${book.id}`}>read more</Link>
-                    }
-                  />
-                </td>
-              </tr>
-            ))}
+            <AnimatePresence>
+              {currentBooks.map(book => (
+                <motion.tr
+                  key={book.id}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <td>{book.category}</td>
+                  <td>{book.author}</td>
+                  <td>{book.title}</td>
+                  <td>
+                    {book.isFav ? (
+                      <button
+                        className="favbutton"
+                        onClick={() => updateState(book.id)}
+                        aria-label="like this book"
+                      >
+                        <HeartIcon />
+                      </button>
+                    ) : (
+                      <button
+                        className="favbutton"
+                        onClick={() => updateState(book.id)}
+                        aria-label="like this book"
+                      >
+                        <HeartIcon />
+                      </button>
+                    )}
+                  </td>
+                  <td style={{ maxWidth: 300 }}>{book.description}</td>
+                  <td>
+                    <Link to={`/book/${book.id}`}>read more</Link>
+                  </td>
+                </motion.tr>
+              ))}
+            </AnimatePresence>
           </tbody>
         </table>
       ) : (
