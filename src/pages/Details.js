@@ -1,41 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import Axios from 'axios';
+import axios from 'axios';
 import { mapSingleBook } from '../utils/mapBooks';
+import useSWR from 'swr';
 
 const Details = () => {
-  const [book, setBook] = useState([]);
   const { id } = useParams();
 
-  useEffect(() => {
-    async function fetchData() {
-      const { data } = await Axios.get(
-        `https://www.googleapis.com/books/v1/volumes/${id}`
-      );
-
-      setBook(mapSingleBook(data));
-    }
-    fetchData();
-  }, [id]);
-  // console.log(book);
+  const fetcher = url => axios.get(url).then(res => mapSingleBook(res.data));
+  const { data, error } = useSWR(
+    `https://www.googleapis.com/books/v1/volumes/${id}`,
+    fetcher
+  );
 
   return (
     <div className="container">
-      {book.imgUrl && <img src={book.imgUrl} alt="" />}
-      <h3>{book.title}</h3>
-      <p>
-        <b>Author:</b> {book.author}
-      </p>
-      <p>
-        <b>Year:</b> {book.publishedDate}
-      </p>
-      <p>
-        <b>Publisher:</b> {book.publisher}
-      </p>
-      <div>
-        <b>Summary: </b>
-        <span dangerouslySetInnerHTML={{ __html: book.description }} />
-      </div>
+      {!data ? (
+        <p>fetching...</p>
+      ) : error ? (
+        <p>error Loading this book</p>
+      ) : (
+        <>
+          {data.imgUrl && <img src={data.imgUrl} alt="" />}
+          <h3>{data.title}</h3>
+          <p>
+            <b>Author:</b> {data.author}
+          </p>
+          <p>
+            <b>Category:</b> {data.category}
+          </p>
+          <p>
+            <b>Year:</b> {data.publishedDate}
+          </p>
+          <p>
+            <b>Publisher:</b> {data.publisher}
+          </p>
+          <div>
+            <b>Summary: </b>
+            <span dangerouslySetInnerHTML={{ __html: data.description }} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
